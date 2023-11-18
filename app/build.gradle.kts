@@ -5,14 +5,15 @@ plugins {
 
 android {
     namespace = "com.example.galleryviewer"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.galleryviewer"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String","API_KEY", properties["API_KEY"].toString())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -72,6 +74,7 @@ dependencies {
 
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     //Gson
     implementation ("com.google.code.gson:gson:2.10.1")

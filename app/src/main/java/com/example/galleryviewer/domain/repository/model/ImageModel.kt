@@ -1,6 +1,6 @@
 package com.example.galleryviewer.domain.repository.model
 
-class Image(
+class ImageModel(
     val id: String,
     val frame: Int,
     val server: String,
