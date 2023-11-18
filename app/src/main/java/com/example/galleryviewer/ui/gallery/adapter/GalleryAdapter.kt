@@ -1,11 +1,13 @@
 package com.example.galleryviewer.ui.gallery.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.galleryviewer.databinding.ItemAdsBinding
 import com.example.galleryviewer.databinding.ItemGalleryBinding
 import com.example.galleryviewer.domain.model.ImageModel
 import com.example.galleryviewer.domain.usecase.ImagePathUseCase
@@ -15,7 +17,7 @@ class GalleryAdapter(
     private val items: ArrayList<ImageModel>,
     private val onItemClickListener: (ImageModel) -> Unit,
 ) :
-    Adapter<GalleryAdapter.GalleryViewHolder>() {
+    Adapter<ViewHolder>() {
     private val loadImageUseCase by lazy { LoadImageUseCase() }
     private val imagePathUseCase by lazy { ImagePathUseCase() }
 
@@ -58,7 +60,19 @@ class GalleryAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
+    class AdsGalleyViewHolder(view: View) : ViewHolder(view)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        if (viewType == GalleryType.Ads.type) {
+            val view = ItemAdsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
+                .root
+            return AdsGalleyViewHolder(view)
+        }
+
         val binding = ItemGalleryBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -68,8 +82,23 @@ class GalleryAdapter(
     }
 
     override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
-        holder.onBind(items[position])
+    override fun getItemViewType(position: Int): Int {
+        return (
+            if (position % 5 == 0) {
+                GalleryType.Ads
+            } else {
+                GalleryType.Image
+            }
+            ).type
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (holder is GalleryViewHolder) {
+            holder.onBind(items[position])
+        }
+    }
+}
+
+enum class GalleryType(val type: Int) {
+    Image(0), Ads(1)
 }
