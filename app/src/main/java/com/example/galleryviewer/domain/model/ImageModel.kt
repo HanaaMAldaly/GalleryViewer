@@ -1,8 +1,8 @@
 package com.example.galleryviewer.domain.model
 
-class ImageModel(
+data class ImageModel(
     val id: String,
-    val frame: Int,
+    val farm: Int,
     val server: String,
-    val secret: String
+    val secret: String,
 )

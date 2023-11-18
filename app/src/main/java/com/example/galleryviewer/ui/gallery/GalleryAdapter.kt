@@ -8,9 +8,13 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.galleryviewer.databinding.ItemGalleryBinding
 import com.example.galleryviewer.domain.model.ImageModel
+import com.example.galleryviewer.domain.usecase.ImagePathUseCase
+import com.example.galleryviewer.domain.usecase.LoadImageUseCase
 
 class GalleryAdapter(private val items: ArrayList<ImageModel>) :
     Adapter<GalleryAdapter.GalleryViewHolder>() {
+    private val loadImageUseCase by lazy { LoadImageUseCase() }
+    private val imagePathUseCase by lazy { ImagePathUseCase() }
     companion object {
         @JvmStatic
         @BindingAdapter("app:bindGallery")
@@ -31,8 +35,11 @@ class GalleryAdapter(private val items: ArrayList<ImageModel>) :
         notifyItemRangeChanged(oldSize, items.size)
     }
 
-    class GalleryViewHolder(private val binding: ItemGalleryBinding) : ViewHolder(binding.root) {
+    inner class GalleryViewHolder(private val binding: ItemGalleryBinding) : ViewHolder(binding.root) {
         fun onBind(item: ImageModel) {
+            loadImageUseCase(imagePathUseCase(item)) {
+                binding.image
+            }
         }
     }
 

@@ -82,4 +82,7 @@ dependencies {
 
     // Gson
     implementation("com.google.code.gson:gson:2.10.1")
+
+    // Picasso
+    implementation("com.squareup.picasso:picasso:2.8")
 }
