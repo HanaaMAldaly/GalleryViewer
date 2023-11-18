@@ -10,6 +10,6 @@ class GalleryRepositoryImpl : GalleryRepository {
         page: Int,
         count: Int
     ): List<ImageModel> {
-        return GalleryAPIClient.getGalleryAPI().getGallery(page, count).map() ?: listOf()
+        return GalleryAPIClient.getGalleryAPI().getGallery(page, count,).map() ?: listOf()
     }
 }
