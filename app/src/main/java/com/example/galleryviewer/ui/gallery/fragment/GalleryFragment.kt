@@ -1,7 +1,6 @@
 package com.example.galleryviewer.ui.gallery.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.galleryviewer.data.repository.GalleryRepositoryImpl
 import com.example.galleryviewer.databinding.FragmentGalleryBinding
+import com.example.galleryviewer.domain.usecase.ListGalleryUseCase
 import com.example.galleryviewer.ui.gallery.viewmodel.GalleryViewModel
 
 class GalleryFragment : Fragment() {
@@ -18,7 +18,9 @@ class GalleryFragment : Fragment() {
     private val viewModel: GalleryViewModel by viewModels(factoryProducer = {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return GalleryViewModel(GalleryRepositoryImpl()) as T
+                return GalleryViewModel(
+                    ListGalleryUseCase(GalleryRepositoryImpl()),
+                ) as T
             }
         }
     })
@@ -30,6 +32,7 @@ class GalleryFragment : Fragment() {
         return FragmentGalleryBinding.inflate(layoutInflater, container, false)
             .apply {
                 viewModel = this@GalleryFragment.viewModel
+                lifecycleOwner = this@GalleryFragment.viewLifecycleOwner
             }
             .root
     }
