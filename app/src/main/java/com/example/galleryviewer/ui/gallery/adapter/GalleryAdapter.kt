@@ -1,4 +1,4 @@
-package com.example.galleryviewer.ui.gallery
+package com.example.galleryviewer.ui.gallery.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,17 +11,28 @@ import com.example.galleryviewer.domain.model.ImageModel
 import com.example.galleryviewer.domain.usecase.ImagePathUseCase
 import com.example.galleryviewer.domain.usecase.LoadImageUseCase
 
-class GalleryAdapter(private val items: ArrayList<ImageModel>) :
+class GalleryAdapter(
+    private val items: ArrayList<ImageModel>,
+    private val onItemClickListener: (ImageModel) -> Unit,
+) :
     Adapter<GalleryAdapter.GalleryViewHolder>() {
     private val loadImageUseCase by lazy { LoadImageUseCase() }
     private val imagePathUseCase by lazy { ImagePathUseCase() }
+
     companion object {
         @JvmStatic
-        @BindingAdapter("app:bindGallery")
-        fun bindGalley(recyclerView: RecyclerView, items: List<ImageModel>?) {
+        @BindingAdapter("app:bindGallery", "app:onItemClickListener")
+        fun bindGalley(
+            recyclerView: RecyclerView,
+            items: List<ImageModel>?,
+            onItemClickListener: (ImageModel) -> Unit,
+        ) {
             items?.let {
                 if (recyclerView.adapter == null) {
-                    recyclerView.adapter = GalleryAdapter(items as ArrayList)
+                    recyclerView.adapter = GalleryAdapter(
+                        items as ArrayList,
+                        onItemClickListener,
+                    )
                 } else {
                     (recyclerView.adapter as GalleryAdapter).addItems(items)
                 }
@@ -35,8 +46,12 @@ class GalleryAdapter(private val items: ArrayList<ImageModel>) :
         notifyItemRangeChanged(oldSize, items.size)
     }
 
-    inner class GalleryViewHolder(private val binding: ItemGalleryBinding) : ViewHolder(binding.root) {
+    inner class GalleryViewHolder(private val binding: ItemGalleryBinding) :
+        ViewHolder(binding.root) {
         fun onBind(item: ImageModel) {
+            binding.root.setOnClickListener {
+                onItemClickListener.invoke(item)
+            }
             loadImageUseCase(imagePathUseCase(item)) {
                 binding.image
             }
