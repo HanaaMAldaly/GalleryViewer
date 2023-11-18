@@ -3,7 +3,7 @@ package com.example.galleryviewer.data.repository
 import com.example.galleryviewer.data.mapper.map
 import com.example.galleryviewer.data.network.cloud.GalleryAPIClient
 import com.example.galleryviewer.domain.repository.GalleryRepository
-import com.example.galleryviewer.domain.repository.model.ImageModel
+import com.example.galleryviewer.domain.model.ImageModel
 
 class GalleryRepositoryImpl : GalleryRepository {
     override suspend fun getGallery(

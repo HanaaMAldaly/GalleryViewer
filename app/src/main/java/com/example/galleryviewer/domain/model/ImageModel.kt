@@ -1,4 +1,4 @@
-package com.example.galleryviewer.domain.repository.model
+package com.example.galleryviewer.domain.model
 
 class ImageModel(
     val id: String,

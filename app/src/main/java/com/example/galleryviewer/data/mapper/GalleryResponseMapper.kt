@@ -1,7 +1,7 @@
 package com.example.galleryviewer.data.mapper
 
 import com.example.galleryviewer.data.vo.GalleryResponse
-import com.example.galleryviewer.domain.repository.model.ImageModel
+import com.example.galleryviewer.domain.model.ImageModel
 
 fun GalleryResponse.map() = this.photos?.photo?.map {
     ImageModel(
