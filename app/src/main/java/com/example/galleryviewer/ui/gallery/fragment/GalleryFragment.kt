@@ -19,6 +19,7 @@ import com.example.galleryviewer.ui.gallery.viewmodel.GalleryViewModel
 
 class GalleryFragment : Fragment() {
 
+    private lateinit var binding: FragmentGalleryBinding
     private val viewModel: GalleryViewModel by viewModels(factoryProducer = {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -35,10 +36,11 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return FragmentGalleryBinding.inflate(layoutInflater, container, false)
+        binding = FragmentGalleryBinding.inflate(layoutInflater, container, false)
             .apply {
                 viewModel = this@GalleryFragment.viewModel
                 lifecycleOwner = this@GalleryFragment.viewLifecycleOwner
+
                 viewModel?.selectedPathItem?.observe(viewLifecycleOwner) {
                     it?.let {
                         navigateToDetailsScreen(it)
@@ -46,7 +48,11 @@ class GalleryFragment : Fragment() {
                     }
                 }
             }
-            .root
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun navigateToDetailsScreen(path: String) {

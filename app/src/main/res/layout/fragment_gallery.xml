@@ -15,12 +15,14 @@
         tools:context=".ui.gallery.fragment.GalleryFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="2"
             tools:listitem="@layout/item_gallery"
             app:bindGallery="@{viewModel.gallery}"
-            app:onItemClickListener="@{viewModel.onItemClickListener}"/>
+            app:onItemClickListener="@{viewModel.onItemClickListener}"
+            app:paginateCallback="@{viewModel.paginateCallbacks}"/>
     </FrameLayout>
 </layout>

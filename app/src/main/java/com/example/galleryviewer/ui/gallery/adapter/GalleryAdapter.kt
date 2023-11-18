@@ -12,6 +12,7 @@ import com.example.galleryviewer.databinding.ItemGalleryBinding
 import com.example.galleryviewer.domain.model.ImageModel
 import com.example.galleryviewer.domain.usecase.ImagePathUseCase
 import com.example.galleryviewer.domain.usecase.LoadImageUseCase
+import com.paginate.Paginate
 
 class GalleryAdapter(
     private val items: ArrayList<ImageModel>,
@@ -23,21 +24,26 @@ class GalleryAdapter(
 
     companion object {
         @JvmStatic
-        @BindingAdapter("app:bindGallery", "app:onItemClickListener")
+        @BindingAdapter(
+            "app:bindGallery",
+            "app:onItemClickListener",
+            "app:paginateCallback",
+        )
         fun bindGalley(
             recyclerView: RecyclerView,
             items: List<ImageModel>?,
             onItemClickListener: (ImageModel) -> Unit,
+            paginateCallback: Paginate.Callbacks,
         ) {
             items?.let {
-                if (recyclerView.adapter == null) {
-                    recyclerView.adapter = GalleryAdapter(
-                        items as ArrayList,
-                        onItemClickListener,
-                    )
-                } else {
-                    (recyclerView.adapter as GalleryAdapter).addItems(items)
-                }
+                recyclerView.adapter = GalleryAdapter(
+                    items as ArrayList,
+                    onItemClickListener,
+                )
+                Paginate.with(recyclerView, paginateCallback)
+                    .setLoadingTriggerThreshold(2)
+                    .addLoadingListItem(true)
+                    .build()
             }
         }
     }

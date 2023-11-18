@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.galleryviewer.domain.model.ImageModel
 import com.example.galleryviewer.domain.usecase.ImagePathUseCase
 import com.example.galleryviewer.domain.usecase.ListGalleryUseCase
+import com.paginate.Paginate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -26,15 +27,22 @@ class GalleryViewModel(
     val selectedPathItem: LiveData<String?> = _selectedPathItem
     private val pageCount = 20
     private var page = 1
+    private var isPageLoading = false
+    private var hasLoadedAllItems = false
 
     init {
         getImages(page, pageCount)
     }
 
     private fun getImages(page: Int, pageCount: Int) {
+        isPageLoading = true
         viewModelScope.launch(exceptionHandler + dispatcher) {
-            _gallery.postValue(useCase.invoke(page, pageCount))
+            val items = useCase.invoke(page, pageCount)
+            if (items.isEmpty()) hasLoadedAllItems = true
+            val allItems = (_gallery.value ?: listOf()) + items
+            _gallery.postValue(allItems)
             this@GalleryViewModel.page++
+            isPageLoading = false
         }
     }
 
@@ -44,5 +52,21 @@ class GalleryViewModel(
 
     fun removeSelectedItem() {
         _selectedPathItem.value = null
+    }
+
+    var paginateCallbacks: Paginate.Callbacks = object : Paginate.Callbacks {
+        override fun onLoadMore() {
+            getImages(page, pageCount)
+        }
+
+        override fun isLoading(): Boolean {
+            // Indicate whether new page loading is in progress or not
+            return isPageLoading
+        }
+
+        override fun hasLoadedAllItems(): Boolean {
+            // Indicate whether all data (pages) are loaded or not
+            return hasLoadedAllItems
+        }
     }
 }

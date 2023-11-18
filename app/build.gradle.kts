@@ -85,4 +85,7 @@ dependencies {
 
     // Picasso
     implementation("com.squareup.picasso:picasso:2.8")
+
+    // Paginate
+    implementation("com.github.markomilos:paginate:1.0.0")
 }
