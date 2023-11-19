@@ -1,6 +1,5 @@
 package com.example.galleryviewer.data.network.builder
 
-import com.example.galleryviewer.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -9,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitFactory {
     private const val BASE_RRL = "https://www.flickr.com/"
 
-    private val retrofit by lazy {
+    private fun getRetrofit() :Retrofit {
         val client = OkHttpClient.Builder()
             .addInterceptor {
                 val request = it.request()
@@ -20,7 +19,7 @@ object RetrofitFactory {
                 )
             }
 
-        Retrofit.Builder()
+      return  Retrofit.Builder()
             .baseUrl(BASE_RRL)
             .addConverterFactory(
                 GsonConverterFactory.create(
@@ -33,5 +32,5 @@ object RetrofitFactory {
             .build()
     }
 
-    fun getAPIClient(): Retrofit = retrofit
+    fun getAPIClient(): Retrofit = getRetrofit()
 }

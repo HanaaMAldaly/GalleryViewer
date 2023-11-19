@@ -48,12 +48,6 @@ class GalleryAdapter(
         }
     }
 
-    private fun addItems(list: List<ImageModel>) {
-        val oldSize = items.size
-        items.addAll(list)
-        notifyItemRangeChanged(oldSize, items.size)
-    }
-
     inner class GalleryViewHolder(private val binding: ItemGalleryBinding) :
         ViewHolder(binding.root) {
         fun onBind(item: ImageModel) {

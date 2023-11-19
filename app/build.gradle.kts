@@ -88,4 +88,9 @@ dependencies {
 
     // Paginate
     implementation("com.github.markomilos:paginate:1.0.0")
+
+    // Mockk
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    //testImplementation("androidx.arch.core:core-testing:2.2.0")
 }

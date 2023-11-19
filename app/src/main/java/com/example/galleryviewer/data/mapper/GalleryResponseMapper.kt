@@ -8,6 +8,6 @@ fun GalleryResponse.map() = this.photos?.photo?.map {
         it.id ?: "",
         it.farm ?: 0,
         it.server ?: "",
-        it.secret ?: ""
+        it.secret ?: "",
     )
 }
