@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="2"
+            android:layout_margin="8dp"
             tools:listitem="@layout/item_gallery"
             app:bindGallery="@{viewModel.gallery}"
             app:onItemClickListener="@{viewModel.onItemClickListener}"
